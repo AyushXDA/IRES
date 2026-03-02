@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>IRES</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+    <!-- ═══════════════════ NAVBAR ═══════════════════ -->
+    <nav class="navbar">
+        <div class="nav-brand">
+            <span class="nav-icon">🚂</span>
+            <span>IRES</span>
+        </div>
+        <div class="nav-links" id="navLinks">
+            <a href="#" data-page="search" class="nav-link active">Search Trains</a>
+            <a href="#" data-page="bookings" class="nav-link auth-only" style="display:none;">My Bookings</a>
+            <a href="#" data-page="admin" class="nav-link admin-only" style="display:none;">Admin Panel</a>
+        </div>
+        <div class="nav-auth">
+            <span id="userGreeting" style="display:none;"></span>
+            <button id="loginBtn" class="btn btn-outline" onclick="showModal('loginModal')">Login</button>
+            <button id="registerBtn" class="btn btn-primary" onclick="showModal('registerModal')">Register</button>
+            <button id="logoutBtn" class="btn btn-outline" style="display:none;" onclick="logout()">Logout</button>
+        </div>
+    </nav>
+
+    <!-- ═══════════════════ TOAST ═══════════════════ -->
+    <div id="toast" class="toast"></div>
+
+    <!-- ═══════════════════ LOGIN MODAL ═══════════════════ -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="modal-close" onclick="hideModal('loginModal')">&times;</span>
+            <h2>Login</h2>
+            <form id="loginForm" onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="loginEmail" required placeholder="you@example.com" />
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" id="loginPassword" required placeholder="••••••" />
+                </div>
+                <button type="submit" class="btn btn-primary btn-full">Login</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- ═══════════════════ REGISTER MODAL ═══════════════════ -->
+    <div id="registerModal" class="modal">
+        <div class="modal-content">
+            <span class="modal-close" onclick="hideModal('registerModal')">&times;</span>
+            <h2>Create Account</h2>
+            <form id="registerForm" onsubmit="handleRegister(event)">
+                <div class="form-group">
+                    <label>Username</label>
+                    <input type="text" id="regUsername" required minlength="3" placeholder="ayush_dev" />
+                </div>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="regEmail" required placeholder="you@example.com" />
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" id="regPassword" required minlength="6" placeholder="Min 6 characters" />
+                </div>
+                <button type="submit" class="btn btn-primary btn-full">Register</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- ═══════════════════ MAIN CONTENT ═══════════════════ -->
+    <main class="container">
+        <!-- ── SEARCH PAGE ── -->
+        <section id="page-search" class="page active">
+            <div class="page-header">
+                <h1>Find Your Train</h1>
+                <p>Search trains by source and destination</p>
+            </div>
+            <div class="search-box">
+                <div class="search-row">
+                    <div class="form-group">
+                        <label>From</label>
+                        <input type="text" id="searchSource" placeholder="e.g. New Delhi" list="stationList" autocomplete="off" />
+                    </div>
+                    <div class="swap-icon" onclick="swapStations()">⇄</div>
+                    <div class="form-group">
+                        <label>To</label>
+                        <input type="text" id="searchDest" placeholder="e.g. Mumbai" list="stationList" autocomplete="off" />
+                    </div>
+                    <button class="btn btn-primary" onclick="searchTrains()">Search</button>
+                </div>
+            </div>
+
+            <div id="trainResults" class="cards-grid"></div>
+            <div id="allTrainsSection">
+                <h2 class="section-title">All Available Trains</h2>
+                <div id="allTrains" class="cards-grid"></div>
+            </div>
+        </section>
+
+        <!-- ── BOOKINGS PAGE ── -->
+        <section id="page-bookings" class="page">
+            <div class="page-header">
+                <h1>My Bookings</h1>
+                <p>Your booking history and active reservations</p>
+            </div>
+            <div id="bookingsList" class="cards-grid"></div>
+            <div id="noBookings" class="empty-state" style="display:none;">
+                <span class="empty-icon">🎫</span>
+                <p>No bookings yet. Search for a train and book your seat!</p>
+            </div>
+        </section>
+
+        <!-- ── ADMIN PAGE ── -->
+        <section id="page-admin" class="page">
+            <div class="page-header">
+                <h1>Admin Panel</h1>
+                <p>Manage trains in the system</p>
+            </div>
+
+            <div class="admin-form-card">
+                <h3>Add New Train</h3>
+                <form id="addTrainForm" onsubmit="handleAddTrain(event)">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Train Number</label>
+                            <input type="text" id="trainNumber" required placeholder="12301" />
+                        </div>
+                        <div class="form-group">
+                            <label>Train Name</label>
+                            <input type="text" id="trainName" required placeholder="Rajdhani Express" />
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Source</label>
+                            <input type="text" id="trainSource" required placeholder="New Delhi" />
+                        </div>
+                        <div class="form-group">
+                            <label>Destination</label>
+                            <input type="text" id="trainDest" required placeholder="Mumbai Central" />
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Total Seats</label>
+                            <input type="number" id="trainSeats" required min="1" placeholder="200" />
+                        </div>
+                        <div class="form-group">
+                            <label>Departure</label>
+                            <input type="text" id="trainDepart" placeholder="16:00" />
+                        </div>
+                        <div class="form-group">
+                            <label>Arrival</label>
+                            <input type="text" id="trainArrive" placeholder="08:15" />
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Add Train</button>
+                </form>
+            </div>
+
+            <h3 class="section-title">Existing Trains</h3>
+            <div id="adminTrainList" class="cards-grid"></div>
+        </section>
+    </main>
+
+    <!-- ═══════════════════ FOOTER ═══════════════════ -->
+    <footer class="footer">
+        <p>Railway Reservation System &mdash; Built with FastAPI + SQLAlchemy</p>
+    </footer>
+
+    <!-- ═══════════════════ STATION DATALIST ═══════════════════ -->
+    <datalist id="stationList"></datalist>
+
+    <script src="app.js"></script>
+</body>
+</html>

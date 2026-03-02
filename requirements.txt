@@ -1,0 +1,22 @@
+# ── Core Framework ────────────────────────────────────
+fastapi==0.115.6
+uvicorn[standard]==0.34.0
+
+# ── Database ──────────────────────────────────────────
+sqlalchemy==2.0.36
+pymysql==1.1.1
+cryptography==44.0.0        # required by pymysql for secure MySQL connections
+
+# ── Auth ──────────────────────────────────────────────
+python-jose[cryptography]==3.3.0   # JWT encoding/decoding
+passlib[bcrypt]==1.7.4             # password hashing with bcrypt
+bcrypt==4.2.1
+
+# ── Validation / Settings ────────────────────────────
+pydantic==2.10.3
+pydantic-settings==2.7.0    # BaseSettings with .env support
+python-dotenv==1.0.1
+
+# ── Dev / Testing ─────────────────────────────────────
+httpx==0.28.1               # async test client for FastAPI
+pytest==8.3.4
