@@ -1,4 +1,4 @@
-# Railway Reservation System (RES)
+# Indian Railway Reservation System (IRES)
 
 A simple full-stack **Railway Reservation System** built using **FastAPI**, **MySQL**, and **Vanilla JavaScript**.  
 This project allows users to search trains, check seat availability, book tickets, cancel bookings, and check PNR status.  
@@ -6,7 +6,7 @@ It also includes an **admin panel** for managing trains, stations, and schedules
 
 ---
 
-## 🚀 Features
+## Features
 
 ### User Features
 - User registration and login
@@ -27,7 +27,7 @@ It also includes an **admin panel** for managing trains, stations, and schedules
 
 ---
 
-## 🛠 Tech Stack
+## Tech Stack
 
 ### Backend
 - **Python**
@@ -49,7 +49,7 @@ It also includes an **admin panel** for managing trains, stations, and schedules
 
 ---
 
-## 📂 Project Structure
+## Project Structure
 
 ```bash
 RES/
